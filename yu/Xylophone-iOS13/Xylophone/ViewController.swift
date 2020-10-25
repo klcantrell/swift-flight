@@ -7,6 +7,12 @@ class ViewController: UIViewController {
     
     enum Note: String {
         case C = "C"
+        case D = "D"
+        case E = "E"
+        case F = "F"
+        case G = "G"
+        case A = "A"
+        case B = "B"
     }
 
     override func viewDidLoad() {
@@ -14,11 +20,19 @@ class ViewController: UIViewController {
     }
 
     @IBAction func keyPressed(_ sender: UIButton) {
-        playSound()
+        let noteName = Note(rawValue: sender.currentTitle!)!
+        playSound(noteName)
+        UIView.animate(withDuration: 0.2, animations: {
+            sender.alpha = 0.5
+        }) { (completed) in
+            UIView.animate(withDuration: 0.2, animations: {
+                sender.alpha = 1
+            })
+        }
     }
     
-    func playSound() {
-        guard let path = Bundle.main.path(forResource: Note.C.rawValue, ofType: "wav") else { return }
+    func playSound(_ noteName: Note) {
+        guard let path = Bundle.main.path(forResource: noteName.rawValue, ofType: "wav") else { return }
         let url = URL(fileURLWithPath: path)
         
         do {
