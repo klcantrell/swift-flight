@@ -1,14 +1,18 @@
 func run() {
-  let db = DataAccess();
-  print(db.getNouns())
-  print(db.getAdjectives())
+  let dataSource: DataSource = InMemoryDataSource();
+  print(dataSource.getNouns())
+  print(dataSource.getAdjectives())
 
-  guard CommandLine.arguments.count > 1 else {
+  guard let firstName = CommandLine.arguments.dropFirst().first else {
     print("Please provide at least yer first name, matey")
     return
   }
 
-  print("Yer pirate name be \(CommandLine.arguments[1])")
+  print("Yer pirate name be \(firstName)")
+
+  if let lastName = CommandLine.arguments.dropFirst(2).first {
+    print("Yer surname be \(lastName)")
+  }
 }
 
 run()

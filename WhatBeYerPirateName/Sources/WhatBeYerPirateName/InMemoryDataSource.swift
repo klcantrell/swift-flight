@@ -1,4 +1,4 @@
-struct DataAccess {
+struct InMemoryDataSource: DataSource {
   func getNouns() -> [String] {
     ["Eye-Patch", "Crab"]
   }
