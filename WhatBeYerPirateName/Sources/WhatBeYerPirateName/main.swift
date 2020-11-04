@@ -1,50 +1,49 @@
 import PirateDataSource
 
-private func run() {
+func main() {
     let pirateDataSource: PirateDataSource = InMemoryPirateDataSource();
     let nouns = pirateDataSource.nouns()
     let adjectives = pirateDataSource.adjectives()
-
+    
     guard let firstName = CommandLine.arguments.dropFirst().first else {
         print("Please provide at least yer first name, matey")
         return
     }
-
-    if let lastName = CommandLine.arguments.dropFirst(2).first {
-        let firstLetterOfLastName = lastName.prefix(1)
-        if let adjective = adjectives.first(where: { 
-            doesWordStartWithLetter(word: $0, letter: String(firstLetterOfLastName)) 
-        }) {
-            print("Yer pirate name be \(firstName) \(adjective) \(lastName)")
-            return
-        } else {
-            noPirateNameFound()
-            return
-        }
-    }
-
-    let firstLetterOfFirstName = firstName.prefix(1)
-    if let noun = nouns.first(where: {
-        doesWordStartWithLetter(word: $0, letter: String(firstLetterOfFirstName))
-    }) {
+    
+    if let lastName = CommandLine.arguments.dropFirst(2).first,
+       let adjective = adjectiveOfName(name: lastName, availableAdjectives: adjectives) {
+        print("Yer pirate name be \(firstName) \(adjective) \(lastName)")
+    } else if let noun = nounOfName(name: firstName, availableNouns: nouns) {
         print("Yer pirate name be \(noun) \(firstName)")
-        return
     } else {
         noPirateNameFound()
-        return
     }
 }
 
-private func noPirateNameFound() {
-    print("Yer pirate name be what yer name already be")
+func noPirateNameFound() {
+    print("Me thinks yer name already be good enough to be what yer pirate name would be")
 }
 
-private func doesWordStartWithLetter(word: String, letter: String) -> Bool {
-    if String(letter) == "K" || String(letter) == "C" {
+func doesWordStartWithLetter(word: String, letter: String) -> Bool {
+    if letter == "K" || letter == "C" {
         return word.starts(with: "K") || word.starts(with: "C")
     } else {
         return word.starts(with: letter) 
     }
 }
 
-run()
+func adjectiveOfName(name: String, availableAdjectives: [String]) -> String? {
+    let firstLetterOfName = name.prefix(1)
+    return availableAdjectives.first(where: {
+        doesWordStartWithLetter(word: $0, letter: String(firstLetterOfName))
+    })
+}
+
+func nounOfName(name: String, availableNouns: [String]) -> String? {
+    let firstLetterOfName = name.prefix(1)
+    return availableNouns.first(where: {
+        doesWordStartWithLetter(word: $0, letter: String(firstLetterOfName))
+    })
+}
+
+main()
