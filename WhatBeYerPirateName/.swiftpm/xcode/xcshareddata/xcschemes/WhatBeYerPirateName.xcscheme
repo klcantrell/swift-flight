@@ -104,7 +104,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "Kal"
+            argument = "Vance"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "Vapor"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
