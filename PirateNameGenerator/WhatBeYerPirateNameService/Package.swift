@@ -9,14 +9,12 @@ let package = Package(
     dependencies: [
         // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0"),
-        .package(url: "https://github.com/vapor/redis.git", from: "4.0.0-beta.6.4"),
     ],
     targets: [
         .target(
             name: "App",
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
-                .product(name: "Redis", package: "redis")
             ],
             swiftSettings: [
                 // Enable better optimizations when building in Release configuration. Despite the use of
