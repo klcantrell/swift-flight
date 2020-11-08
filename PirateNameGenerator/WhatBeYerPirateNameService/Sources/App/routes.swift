@@ -1,5 +1,4 @@
 import Vapor
-import Redis
 
 func routes(_ app: Application) throws {
     let pirateNameGenerator = PirateNameGenerator(pirateDataSource: InMemoryPirateDataSource())
