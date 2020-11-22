@@ -3,18 +3,18 @@ import Vapor
 func routes(_ app: Application) throws {
     let pirateNameGenerator = PirateNameGenerator(pirateDataSource: InMemoryPirateDataSource())
     
-    app.get("pirate-name", ":firstName") { req -> String in
+    app.get("pirate-name", ":firstName") { req throws -> String in
         let firstName = req.parameters.get("firstName")!
-        return pirateNameGenerator.forFirstName(firstName)
+        return try pirateNameGenerator.forFirstName(firstName)
     }
     
-    app.get("pirate-name", ":firstName", ":lastName") { req -> String in
+    app.get("pirate-name", ":firstName", ":lastName") { req throws -> String in
         let firstName = req.parameters.get("firstName")!
         let lastName = req.parameters.get("lastName")!
-        return pirateNameGenerator.forFullName(firstName: firstName, lastName: lastName)
+        return try pirateNameGenerator.forFullName(firstName: firstName, lastName: lastName)
     }
     
-    app.get("**") { req in
-        return "Be you lost, matey?"
+    app.get("**") { req throws -> String in
+        throw Abort(.notFound, reason: "Be you lost, matey?")
     }
 }

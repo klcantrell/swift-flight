@@ -1,21 +1,23 @@
+import Vapor
+
 struct PirateNameGenerator {
     let pirateDataSource: PirateDataSource
     
-    func forFirstName(_ firstName: String) -> String {
+    func forFirstName(_ firstName: String) throws -> String {
         let nouns = pirateDataSource.nouns()
         if let noun = nounForName(name: firstName, availableNouns: nouns) {
-            return "Yer pirate name be \(noun) \(firstName)"
+            return "\(noun) \(firstName)"
         } else {
-            return noPirateNameFound
+            throw noPirateNameFound
         }
     }
     
-    func forFullName(firstName: String, lastName: String) -> String {
+    func forFullName(firstName: String, lastName: String) throws -> String {
         let adjectives = pirateDataSource.adjectives()
         if let adjective = adjectiveForName(name: lastName, availableAdjectives: adjectives) {
-            return "Yer pirate name be \(firstName) \(adjective) \(lastName)"
+            return "\(firstName) \(adjective) \(lastName)"
         } else {
-            return forFirstName(firstName)
+            return try forFirstName(firstName)
         }
     }
 
@@ -42,4 +44,4 @@ struct PirateNameGenerator {
     }
 }
 
-private let noPirateNameFound = "Me thinks yer name already be good enough to be what yer pirate name would be"
+private let noPirateNameFound = Abort(.badRequest, reason: "Me thinks yer name already be good enough to be what yer pirate name would be")
