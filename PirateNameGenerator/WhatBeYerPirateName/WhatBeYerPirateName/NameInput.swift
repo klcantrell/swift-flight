@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct NameInput: View {
+    @Environment(\.colorScheme) var colorScheme
+    
     var text: Binding<String>
     var onNameEntered: () -> Void
     
@@ -14,6 +16,7 @@ struct NameInput: View {
             )
             .background(
                 RoundedRectangle(cornerRadius: 50)
+                    .fill(colorScheme == .light ? Color.white : Color.black.opacity(0.8))
             )
     }
 }

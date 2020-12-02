@@ -32,16 +32,18 @@ struct ContentView: View {
                             generatedName = $0
                         })
                     })
-                        .frame(minWidth: 0,
-                                maxWidth: .infinity,
-                                alignment: .leading)
+                    .frame(minWidth: 0,
+                           maxWidth: geometry.size.width > geometry.size.height
+                                ? geometry.size.width * 0.6
+                                : geometry.size.width * 0.9,
+                           alignment: .leading)
 
                     NameHeader(displayWhen: currentState == .Requesting)
                         .frame(minWidth: 0,
-                                maxWidth: .infinity,
-                                alignment: .leading)
+                               maxWidth: .infinity,
+                               alignment: .leading)
                 }
-                .offset(y: -100)
+                .offset(y: geometry.size.width > geometry.size.height ? -50 : -100)
             }
             .frame(minWidth: 0,
                     maxWidth: .infinity,
@@ -67,13 +69,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-            ContentView()
-                .environment(\.colorScheme, .light)
-            ContentView()
-                .environment(\.colorScheme, .dark)
+        ContentView()
     }
 }
-
-// Get orientation: Compare width vs. height, use UI device API
-// To set placeholder, use empty placeholder provide a custom placeholder TextField
-// Consider set height for ship and waves

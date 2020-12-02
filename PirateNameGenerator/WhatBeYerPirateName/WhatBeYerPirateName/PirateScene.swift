@@ -12,42 +12,49 @@ struct PirateScene: View {
     }
     
     var body: some View {
-        VStack {
+        let isWide = contextWidth > contextHeight
+        let waveAnimationOffset = isWide ? contextHeight * 1.2 : contextWidth * 1.2
+        let waveStaticOffset: CGFloat = isWide ? -100 : -200
+        
+        return VStack {
             ZStack {
                 if !shouldAnimate {
                     Image("waves")
                         .resizable()
                         .scaledToFill()
-                        .frame(height: contextHeight / 4)
+                        .frame(height: 200)
+                        .offset(x: waveStaticOffset)
                 }
                 
                 Image("waves")
                     .resizable()
                     .scaledToFill()
-                    .frame(height: contextHeight / 4)
-                    .offset(x: shouldAnimate ? contextWidth * 1.2 : 0)
+                    .frame(height: 200)
+                    .offset(x: shouldAnimate ? waveAnimationOffset : waveStaticOffset)
                     .animation(shouldAnimate ? .linear(duration: 10) : Animation.default)
                     .opacity(shouldAnimate ? 1 : 0)
                     .animation(nil)
             }
-            .offset(y: contextHeight / 20)
+            .offset(y: isWide ? 80 : 40)
             
             ZStack {
                 if !shouldAnimate {
                     Image("pirate-ship")
                         .resizable()
-                        .frame(width: contextWidth / 4, height: contextHeight / 8)
+                        .scaledToFit()
+                        .frame(height: 110)
                 }
                 
                 Image("pirate-ship")
                     .resizable()
-                    .frame(width: contextWidth / 4, height: contextHeight / 8)
+                    .scaledToFit()
+                    .frame(height: 110)
                     .offset(y: shouldAnimate ? -10 : 0)
                     .animation(shouldAnimate ? Animation.easeInOut(duration: 0.4).repeatForever(autoreverses: true) : Animation.default)
                     .opacity(shouldAnimate ? 1 : 0)
                     .animation(nil)
             }
-            .offset(y: -(contextHeight / 5))
+            .offset(y: isWide ? -130 : -180)
         }
     }
 }

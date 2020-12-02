@@ -12,6 +12,7 @@ struct NameHeader: View {
             .padding()
             .opacity(shouldDisplay ? 1 : 0)
             .font(.custom("Zapfino", size: 20))
+            .foregroundColor(.black)
     }
 }
 

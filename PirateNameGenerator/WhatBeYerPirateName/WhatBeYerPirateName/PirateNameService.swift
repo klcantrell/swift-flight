@@ -2,7 +2,7 @@ import Foundation
 
 struct PirateNameService {
     func getPirateName(for firstName: String, andThen callback: @escaping (String) -> Void) {
-        guard let url = URL(string: "http://localhost:8080/pirate-name/\(firstName)") else {
+        guard let url = URL(string: "http://127.0.0.1:8080/pirate-name/\(firstName)") else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 callback("There was a problem with the request")
             }
