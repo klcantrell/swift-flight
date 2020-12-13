@@ -41,7 +41,7 @@ struct ContentView: View {
                     NameHeader(displayWhen: currentState == .Requesting)
                         .frame(minWidth: 0,
                                maxWidth: .infinity,
-                               alignment: .leading)
+                               alignment: .center)
                 }
                 .offset(y: geometry.size.width > geometry.size.height ? -50 : -100)
             }
@@ -59,7 +59,11 @@ struct ContentView: View {
                     .opacity(0.2)
             )
             .sheet(isPresented: $showNameSheet) {
+                #if os(iOS)
                 NameSheet(pirateName: generatedName ?? "")
+                #else
+                DesktopNameView(pirateName: generatedName ?? "")
+                #endif
             }
         }
         .background(Color.white)

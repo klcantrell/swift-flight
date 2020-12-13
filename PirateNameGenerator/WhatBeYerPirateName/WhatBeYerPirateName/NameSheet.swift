@@ -1,15 +1,24 @@
 import SwiftUI
 
 struct NameSheet: View {
+    @Environment(\.presentationMode) var presentation
+    
     var pirateName: String
     
     var body: some View {
-        VStack {
-            Image("pirate-flag")
-                .resizable()
-                .scaledToFit()
-            Text(pirateName)
-                .font(.custom("Zapfino", size: 24))
+        NavigationView {
+            ZStack {
+                Color.white.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
+                VStack {
+                    Image("pirate-flag")
+                        .resizable()
+                        .scaledToFit()
+                    Text(pirateName)
+                        .font(.custom("Zapfino", size: 24))
+                        .foregroundColor(.black)
+                }
+                .navigationBarItems(leading: Button("Done", action: { self.presentation.wrappedValue.dismiss() }))
+            }
         }
     }
 }

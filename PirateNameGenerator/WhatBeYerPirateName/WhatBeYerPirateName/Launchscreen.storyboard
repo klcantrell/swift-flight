@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nYG-0r-jnx">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="Evi-RZ-tTb">
+            <objects>
+                <viewController id="nYG-0r-jnx" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="KxE-8n-uWn">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pirate-flag" translatesAutoresizingMaskIntoConstraints="NO" id="0lj-tz-mIl">
+                                <rect key="frame" x="20" y="94" width="374" height="300"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="gD4-9N-b79"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gNS-Zn-Mu4">
+                                <rect key="frame" x="0.0" y="414" width="414" height="216.5"/>
+                                <string key="text">What be yer
+Pirate Name</string>
+                                <fontDescription key="fontDescription" name="Zapfino" family="Zapfino" pointSize="32"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="CcV-Go-hIx"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="0lj-tz-mIl" firstAttribute="top" secondItem="CcV-Go-hIx" secondAttribute="top" constant="50" id="1sG-1K-jxE"/>
+                            <constraint firstItem="0lj-tz-mIl" firstAttribute="leading" secondItem="KxE-8n-uWn" secondAttribute="leadingMargin" id="LbB-lA-sR2"/>
+                            <constraint firstItem="gNS-Zn-Mu4" firstAttribute="top" secondItem="0lj-tz-mIl" secondAttribute="bottom" priority="750" constant="20" id="NAe-gV-IeG"/>
+                            <constraint firstItem="gNS-Zn-Mu4" firstAttribute="leading" secondItem="CcV-Go-hIx" secondAttribute="leading" id="W7V-Gv-0wl"/>
+                            <constraint firstItem="CcV-Go-hIx" firstAttribute="trailing" secondItem="gNS-Zn-Mu4" secondAttribute="trailing" id="WVu-7Q-aQY"/>
+                            <constraint firstItem="0lj-tz-mIl" firstAttribute="centerX" secondItem="KxE-8n-uWn" secondAttribute="centerX" id="eHd-zJ-Tab"/>
+                            <constraint firstItem="CcV-Go-hIx" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gNS-Zn-Mu4" secondAttribute="bottom" constant="10" id="lr7-fX-6IB"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="0lj-tz-mIl" secondAttribute="trailing" id="mZB-fc-phi"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="flag" destination="0lj-tz-mIl" id="tlU-v9-uuy"/>
+                        <outlet property="label" destination="gNS-Zn-Mu4" id="D6q-ER-OZe"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C1M-p2-Nmm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="84.375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="pirate-flag" width="320" height="203.5"/>
+    </resources>
+</document>
