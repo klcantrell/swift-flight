@@ -17,7 +17,12 @@ struct NameSheet: View {
                         .font(.custom("Zapfino", size: 24))
                         .foregroundColor(.black)
                 }
-                .navigationBarItems(leading: Button("Done", action: { self.presentation.wrappedValue.dismiss() }))
+                .toolbar {
+                    #if os(iOS)
+                    Button("Done", action: { self.presentation.wrappedValue.dismiss() }
+                    )
+                    #endif
+                }
             }
         }
     }

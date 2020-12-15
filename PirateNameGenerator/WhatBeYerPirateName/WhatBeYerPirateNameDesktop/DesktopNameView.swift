@@ -12,7 +12,7 @@ struct DesktopNameView: View {
             })
                 .frame(minWidth: 0,
                        maxWidth: .infinity,
-                       alignment: .leading)
+                       alignment: .trailing)
                 .padding(.horizontal)
             Image("pirate-flag")
                 .resizable()
