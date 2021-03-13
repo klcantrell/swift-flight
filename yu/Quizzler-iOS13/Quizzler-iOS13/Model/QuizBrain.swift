@@ -1,11 +1,8 @@
-import UIKit
+import Foundation
 
-class ViewController: UIViewController {
-    
-    @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var progressBar: UIProgressView!
-    @IBOutlet weak var trueButton: UIButton!
-    @IBOutlet weak var falseButton: UIButton!
+struct QuizBrain {
+    var questionNumber = 0
+    var score = 0
     
     let quiz = [
         Question(q: "A slug's blood is green.", a: "True"),
@@ -22,41 +19,33 @@ class ViewController: UIViewController {
         Question(q: "Chocolate affects a dog's heart and nervous system; a few ounces are enough to kill a small dog.", a: "True")
     ]
     
-    var questionNumber = 0
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        updateUI()
+    mutating func checkAnswer(_ userAnswer: String) -> Bool  {
+        let question = quiz[questionNumber]
+        let answeredCorrectly = userAnswer == question.answer
+        if answeredCorrectly {
+            score += 1
+        }
+        return answeredCorrectly
     }
     
-    @IBAction func answerButtonPressed(_ sender: UIButton) {
-        let userAnswer = sender.currentTitle!
-        let question = quiz[questionNumber]
-        
-        if userAnswer == question.answer {
-            sender.backgroundColor = UIColor.green
-        } else {
-            sender.backgroundColor = UIColor.red
-        }
-        
+    mutating func nextQuestion() {
         if questionNumber + 1 < quiz.count {
             questionNumber = questionNumber + 1
         } else {
             questionNumber = 0
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.updateUI()
+            score = 0
         }
     }
     
-    func updateUI() {
-        let question = quiz[questionNumber]
-        questionLabel.text = question.text
-        trueButton.backgroundColor = UIColor.clear
-        falseButton.backgroundColor = UIColor.clear
-        progressBar.progress = Float(questionNumber + 1) / Float(quiz.count)
+    func getQuestionText() -> String {
+        return quiz[questionNumber].text
+    }
+    
+    func getCurrentProgress() -> Float {
+        return Float(questionNumber + 1) / Float(quiz.count)
+    }
+    
+    func getScore() -> Int {
+        return score
     }
 }
-
