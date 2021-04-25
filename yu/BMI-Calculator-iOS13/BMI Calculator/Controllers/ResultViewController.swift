@@ -1,26 +1,23 @@
 import UIKit
 
 class ResultViewController: UIViewController {
-    private(set) var bmi: String?
     
-    init(bmi: String) {
-        self.bmi = bmi
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.bmi = nil
-    }
+    var bmiValue: String?
+    var advice: String?
+    var color: UIColor?
+
+    @IBOutlet weak var bmiLabel: UILabel!
+    @IBOutlet weak var adviceLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
-        
-        let label = UILabel()
-        label.text = "Hello"
-        label.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        view.addSubview(label)
+        bmiLabel.text = bmiValue
+        adviceLabel.text = advice
+        view.backgroundColor = color
+    }
+
+    @IBAction func recalculatePressed(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
