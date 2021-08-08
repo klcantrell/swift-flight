@@ -1,29 +1,64 @@
 import Foundation
+import CoreLocation
+
+protocol WeatherManagerDelegate {
+    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel)
+    
+    func didFailWithError(error: Error)
+}
+
+extension WeatherManagerDelegate {
+    func didFailWithError(error: Error) {
+        print(error)
+    }
+}
 
 struct WeatherManager {
-    let url = "https://api.openweathermap.org/data/2.5/weather?appid=REDACTED6&units=imperial"
+    let url = "https://api.openweathermap.org/data/2.5/weather?appid=REDACTED&units=imperial"
+    
+    var delegate: WeatherManagerDelegate?
     
     func fetchWeather(cityName: String) {
         let urlString = "\(url)&q=\(cityName)"
-        print(urlString)
+        performRequest(with: urlString)
     }
     
-    func performRequest(urlString: String) {
+    func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
+        let urlString = "\(url)&lat=\(latitude)&lon=\(longitude)"
+        performRequest(with: urlString)
+    }
+    
+    func performRequest(with urlString: String) {
         if let url = URL(string: urlString) {
             let session = URLSession(configuration: .default)
-            let task = session.dataTask(with: url, completionHandler: handleRequestCompletion(data: response: error:))
+            let task = session.dataTask(with: url) { data, response, error in
+                if error != nil {
+                    self.delegate?.didFailWithError(error: error!)
+                    return
+                }
+                if let safeData = data, let weather = parseJSON(safeData) {
+                    self.delegate?.didUpdateWeather(self, weather: weather)
+                }
+            }
             task.resume()
         }
     }
     
-    func handleRequestCompletion(data: Data?, response: URLResponse?, error: Error?) {
-        if error != nil {
-            print(error!)
-            return
-        }
-        if let safeData = data {
-            let dataString = String(data: safeData, encoding: .utf8)
-            print(dataString)
+    func parseJSON(_ weatherData: Data) -> WeatherModel? {
+        let decoder = JSONDecoder()
+        do {
+            let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
+            let id = !decodedData.weather.isEmpty ? decodedData.weather[0].id : 999
+            let temperature = decodedData.main.temp
+            let cityName = decodedData.name
+            
+            let weather = WeatherModel(conditionId: id, cityName: cityName, temperature: temperature)
+            
+            return weather
+        } catch {
+            delegate?.didFailWithError(error: error)
+            return nil
         }
     }
+    
 }
