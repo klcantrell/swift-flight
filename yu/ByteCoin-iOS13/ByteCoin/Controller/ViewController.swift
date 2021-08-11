@@ -18,6 +18,8 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: - CoinManagerDelegate
+
 extension ViewController: CoinManagerDelegate {
     func didReceiveData(_ coinManager: CoinManager, coinData: CoinModel) {
         DispatchQueue.main.async {
@@ -29,9 +31,9 @@ extension ViewController: CoinManagerDelegate {
     func didFailWithError(error: Error) {
         print("OH NO! ERROR: \(error)")
     }
-    
-    
 }
+
+// MARK: - UIPickerViewDataSource
 
 extension ViewController: UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -42,6 +44,8 @@ extension ViewController: UIPickerViewDataSource {
         return coinManager.currencyArray.count
     }
 }
+
+// MARK: - UIPickerViewDelegate
 
 extension ViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
