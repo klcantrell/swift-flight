@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>557517402410-dipgjpr7btbeqh6vok89fbtosa0sp2qp.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.557517402410-dipgjpr7btbeqh6vok89fbtosa0sp2qp</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDIiCI-DlPBtzCHbGA1jdEl23MNVVMkjXA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>557517402410</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.kal.cantrell.yu-flash-chat</string>
+	<key>PROJECT_ID</key>
+	<string>yuflashchat</string>
+	<key>STORAGE_BUCKET</key>
+	<string>yuflashchat.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:557517402410:ios:e3a08acf93c13537f9ae53</string>
+</dict>
+</plist>
