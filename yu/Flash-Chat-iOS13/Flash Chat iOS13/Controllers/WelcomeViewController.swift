@@ -7,7 +7,7 @@ class WelcomeViewController: UIViewController {
         super.viewDidLoad()
         
         titleLabel.text = ""
-        let titleText = "⚡️FlashChat"
+        let titleText = Constants.appName
         for (characterIndex, letter) in titleText.enumerated() {
             Timer.scheduledTimer(withTimeInterval: Double(characterIndex) * 0.1, repeats: false) { timer in
                 self.titleLabel.text?.append(letter)
