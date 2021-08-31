@@ -1,7 +1,8 @@
 import UIKit
+import CoreData
 
 class TodoListViewController: UITableViewController {
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Todos.plist")
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var itemArray = [Todo]()
     
     override func viewDidLoad() {
@@ -13,8 +14,9 @@ class TodoListViewController: UITableViewController {
         var textField = UITextField()
         let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Item", style: .default) { action in
-            let todo = Todo()
+            let todo = Todo(context: self.context)
             todo.title = textField.text!
+            todo.done = false
             self.itemArray.append(todo)
             self.persistTodos()
         }
@@ -27,26 +29,19 @@ class TodoListViewController: UITableViewController {
     }
 
     func loadTodos() {
+        let request: NSFetchRequest<Todo> = Todo.fetchRequest()
         do {
-            let data = try Data(contentsOf: dataFilePath!)
-            let decoder = PropertyListDecoder()
-            do {
-                itemArray = try decoder.decode([Todo].self, from: data)
-            } catch(let decodeError) {
-                print("Error decoding item array: \(decodeError)")
-            }
+            itemArray = try context.fetch(request)
         } catch(let error) {
-            print("Error retrieving item array: \(error)")
+            print("There was an error retrieving todos: \(error)")
         }
     }
 
     func persistTodos() {
-        let encoder = PropertyListEncoder()
         do {
-            let data = try encoder.encode(itemArray)
-            try data.write(to: dataFilePath!)
+            try context.save()
         } catch(let error) {
-            print("Error encoding item array: \(error)")
+            print("There was an error saving todos: \(error)")
         }
         tableView.reloadData()
     }
