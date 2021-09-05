@@ -3,8 +3,14 @@
     <entity name="Todo" representedClassName=".Todo" syncable="YES" codeGenerationType="class">
         <attribute name="done" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
+        <relationship name="parentCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TodoCategory" inverseName="todos" inverseEntity="TodoCategory"/>
+    </entity>
+    <entity name="TodoCategory" representedClassName=".TodoCategory" syncable="YES" codeGenerationType="class">
+        <attribute name="name" attributeType="String"/>
+        <relationship name="todos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Todo" inverseName="parentCategory" inverseEntity="Todo"/>
     </entity>
     <elements>
-        <element name="Todo" positionX="-54" positionY="-9" width="128" height="59"/>
+        <element name="Todo" positionX="-8709.8837890625" positionY="-7098.585876464844" width="128" height="88"/>
+        <element name="TodoCategory" positionX="-8489.03369140625" positionY="-7089.933410644531" width="128" height="73"/>
     </elements>
 </model>
