@@ -1,9 +1,9 @@
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var categoriesArray = [TodoCategory]()
+    let realm = try! Realm()
+    var categoriesArray: Results<TodoCategory>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -14,10 +14,9 @@ class CategoryViewController: UITableViewController {
         var textField = UITextField()
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "Add Category", style: .default) { action in
-            let category = TodoCategory(context: self.context)
+            let category = TodoCategory()
             category.name = textField.text!
-            self.categoriesArray.append(category)
-            self.persistCategories()
+            self.save(category)
         }
         alert.addTextField { alertTextField in
             alertTextField.placeholder = "Create new category"
@@ -27,17 +26,15 @@ class CategoryViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    func loadCategories(with request: NSFetchRequest<TodoCategory> = TodoCategory.fetchRequest()) {
-        do {
-            categoriesArray = try context.fetch(request)
-        } catch(let error) {
-            print("There was an error retrieving categories: \(error)")
-        }
+    func loadCategories() {
+        categoriesArray = realm.objects(TodoCategory.self)
     }
 
-    func persistCategories() {
+    func save(_ todoCategory: TodoCategory) {
         do {
-            try context.save()
+            try realm.write {
+                realm.add(todoCategory)
+            }
         } catch(let error) {
             print("There was an error saving categories: \(error)")
         }
@@ -49,13 +46,13 @@ class CategoryViewController: UITableViewController {
 
 extension CategoryViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categoriesArray.count
+        return categoriesArray?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let category = categoriesArray[indexPath.row]
+        let cellText = categoriesArray?[indexPath.row].name ?? "No categories added yet"
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell")!
-        cell.textLabel?.text = category.name
+        cell.textLabel?.text = cellText
         return cell
     }
 }
@@ -66,7 +63,7 @@ extension CategoryViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationViewController = segue.destination as! TodoListViewController
         if let indexPath = tableView.indexPathForSelectedRow {
-            destinationViewController.selectedCategory = categoriesArray[indexPath.row]
+            destinationViewController.selectedCategory = categoriesArray?[indexPath.row]
         }
     }
 

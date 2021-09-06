@@ -6,14 +6,8 @@ import RealmSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//        do {
-//            let realm = try Realm()
-//        } catch(let error) {
-//            print("Error initializing new Realm: \(error)")
-//        }
-
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
         return true
     }
 
