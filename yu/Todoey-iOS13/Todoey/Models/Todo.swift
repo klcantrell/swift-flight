@@ -4,5 +4,6 @@ import RealmSwift
 class Todo: Object {
     @Persisted var title: String = ""
     @Persisted var done: Bool = false
-    var parentCategory = LinkingObjects(fromType: TodoCategory.self, property: "todos")
+    @Persisted var dateCreated: Date = Date()
+    @Persisted(originProperty: "todos") var parentCategory: LinkingObjects<TodoCategory>
 }

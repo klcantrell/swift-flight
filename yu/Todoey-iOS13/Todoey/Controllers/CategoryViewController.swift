@@ -46,11 +46,14 @@ class CategoryViewController: UITableViewController {
 
 extension CategoryViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categoriesArray?.count ?? 1
+        if let rowCount = categoriesArray?.count {
+            return rowCount == 0 ? 1 : rowCount
+        }
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellText = categoriesArray?[indexPath.row].name ?? "No categories added yet"
+        let cellText = categoriesArray?.count ?? 0 == 0 ? "No categories added yet" : categoriesArray?[indexPath.row].name
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell")!
         cell.textLabel?.text = cellText
         return cell
@@ -63,11 +66,14 @@ extension CategoryViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationViewController = segue.destination as! TodoListViewController
         if let indexPath = tableView.indexPathForSelectedRow {
-            destinationViewController.selectedCategory = categoriesArray?[indexPath.row]
+            destinationViewController.selectedCategory = categoriesArray?.count ?? 0 == 0 ? nil : categoriesArray?[indexPath.row]
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard categoriesArray?.count ?? 0 > 0 else {
+            return
+        }
         performSegue(withIdentifier: "goToTodos", sender: self)
     }
 }
