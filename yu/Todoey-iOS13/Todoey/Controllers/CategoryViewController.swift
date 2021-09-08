@@ -1,13 +1,19 @@
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
-class CategoryViewController: UITableViewController {
+class CategoryViewController: SwipeTableViewController {
     let realm = try! Realm()
     var categoriesArray: Results<TodoCategory>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         loadCategories()
+        tableView.rowHeight = 80.0
+        tableView.separatorStyle = .none
+        if #available(iOS 15.0, *) {
+            tableView.fillerRowHeight = 80.0
+        }
     }
 
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -26,6 +32,8 @@ class CategoryViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
 
+    // MARK: - Data manipulation methods
+
     func loadCategories() {
         categoriesArray = realm.objects(TodoCategory.self)
     }
@@ -40,22 +48,33 @@ class CategoryViewController: UITableViewController {
         }
         tableView.reloadData()
     }
+    
+    override func updateDataModel(at indexPath: IndexPath) {
+        if let category = self.categoriesArray?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    self.realm.delete(category.todos)
+                    self.realm.delete(category)
+                }
+            } catch(let error) {
+                print("Error deleting category: \(error)")
+            }
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource
 
 extension CategoryViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let rowCount = categoriesArray?.count {
-            return rowCount == 0 ? 1 : rowCount
-        }
-        return 1
+        categoriesArray?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellText = categoriesArray?.count ?? 0 == 0 ? "No categories added yet" : categoriesArray?[indexPath.row].name
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell")!
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        let cellText = categoriesArray?[indexPath.row].name ?? "No categories added yet"
         cell.textLabel?.text = cellText
+        cell.backgroundColor = UIColor.randomFlat()
         return cell
     }
 }

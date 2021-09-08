@@ -1,7 +1,7 @@
 import UIKit
 import RealmSwift
 
-class TodoListViewController: UITableViewController {
+class TodoListViewController: SwipeTableViewController {
     let realm = try! Realm()
     var todos: Results<Todo>?
 
@@ -14,6 +14,10 @@ class TodoListViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.rowHeight = 80.0
+        if #available(iOS 15.0, *) {
+            tableView.fillerRowHeight = 80.0
+        }
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -41,9 +45,23 @@ class TodoListViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
 
+    // MARK: - Data manipulation methods
+
     func loadTodos() {
         todos = selectedCategory?.todos.sorted(byKeyPath: "dateCreated", ascending: true)
         tableView.reloadData()
+    }
+
+    override func updateDataModel(at indexPath: IndexPath) {
+        if let todo = todos?[indexPath.row] {
+            do {
+                try self.realm.write {
+                    self.realm.delete(todo)
+                }
+            } catch(let error) {
+                print("Error deleting todo: \(error)")
+            }
+        }
     }
 }
 
@@ -51,12 +69,12 @@ class TodoListViewController: UITableViewController {
 
 extension TodoListViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todos?.count ?? 0 == 0 ? 1 : todos!.count
+        return todos?.count ?? 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell")!
-        if let todo = todos?.count ?? 0 == 0 ? nil : todos?[indexPath.row] {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        if let todo = todos?[indexPath.row] {
             cell.textLabel?.text = todo.title
             cell.accessoryType = todo.done ? .checkmark : .none
         } else {
@@ -70,7 +88,7 @@ extension TodoListViewController {
 
 extension TodoListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let todo = todos?.count ?? 0 == 0 ? nil : todos?[indexPath.row] {
+        if let todo = todos?[indexPath.row] {
             do {
                 try realm.write {
                     todo.done = !todo.done
