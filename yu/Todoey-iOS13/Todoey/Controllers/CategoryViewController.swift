@@ -22,6 +22,7 @@ class CategoryViewController: SwipeTableViewController {
         let action = UIAlertAction(title: "Add Category", style: .default) { action in
             let category = TodoCategory()
             category.name = textField.text!
+            category.rowColor = UIColor.randomFlat().hexValue()
             self.save(category)
         }
         alert.addTextField { alertTextField in
@@ -72,9 +73,10 @@ extension CategoryViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        let cellText = categoriesArray?[indexPath.row].name ?? "No categories added yet"
+        let category = categoriesArray?[indexPath.row]
+        let cellText = category?.name ?? "No categories added yet"
         cell.textLabel?.text = cellText
-        cell.backgroundColor = UIColor.randomFlat()
+        cell.backgroundColor = UIColor(hexString: category?.rowColor ?? UIColor.randomFlat().hexValue())
         return cell
     }
 }

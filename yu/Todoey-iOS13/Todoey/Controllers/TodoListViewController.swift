@@ -1,10 +1,11 @@
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
 class TodoListViewController: SwipeTableViewController {
     let realm = try! Realm()
     var todos: Results<Todo>?
-
+    
     var selectedCategory: TodoCategory? {
         didSet {
             loadTodos()
@@ -15,6 +16,7 @@ class TodoListViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 80.0
+        tableView.separatorStyle = .none
         if #available(iOS 15.0, *) {
             tableView.fillerRowHeight = 80.0
         }
@@ -44,14 +46,14 @@ class TodoListViewController: SwipeTableViewController {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
-
+    
     // MARK: - Data manipulation methods
-
+    
     func loadTodos() {
         todos = selectedCategory?.todos.sorted(byKeyPath: "dateCreated", ascending: true)
         tableView.reloadData()
     }
-
+    
     override func updateDataModel(at indexPath: IndexPath) {
         if let todo = todos?[indexPath.row] {
             do {
@@ -77,6 +79,11 @@ extension TodoListViewController {
         if let todo = todos?[indexPath.row] {
             cell.textLabel?.text = todo.title
             cell.accessoryType = todo.done ? .checkmark : .none
+            if let color = UIColor(hexString: selectedCategory!.rowColor)?
+                .darken(byPercentage: CGFloat(indexPath.row) / CGFloat(todos!.count)) {
+                cell.backgroundColor = color
+                cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+            }
         } else {
             cell.textLabel?.text = "No items added"
         }
@@ -113,7 +120,7 @@ extension TodoListViewController: UISearchBarDelegate {
         todos = selectedCategory?.todos.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
         tableView.reloadData()
     }
-
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 {
             loadTodos()
