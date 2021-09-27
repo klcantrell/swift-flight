@@ -10,12 +10,25 @@ class CategoryViewController: SwipeTableViewController {
         super.viewDidLoad()
         loadCategories()
         tableView.rowHeight = 80.0
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .singleLine
         if #available(iOS 15.0, *) {
             tableView.fillerRowHeight = 80.0
         }
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let backgroundColor = UIColor(hexString: "5856D6")
+        navigationController?.navigationBar.scrollEdgeAppearance?.backgroundColor = backgroundColor
+        navigationController?.navigationBar.standardAppearance.backgroundColor = backgroundColor
+        navigationController?.navigationBar.tintColor = UIColor.white
+        navigationController?.navigationBar.scrollEdgeAppearance?.largeTitleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        navigationController?.navigationBar.standardAppearance.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+    }
+    
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         let alert = UIAlertController(title: "Add New Category", message: "", preferredStyle: .alert)
@@ -76,7 +89,10 @@ extension CategoryViewController {
         let category = categoriesArray?[indexPath.row]
         let cellText = category?.name ?? "No categories added yet"
         cell.textLabel?.text = cellText
-        cell.backgroundColor = UIColor(hexString: category?.rowColor ?? UIColor.randomFlat().hexValue())
+        if let backgroundColor = UIColor(hexString: category?.rowColor ?? "#fff") {
+            cell.textLabel?.textColor = ContrastColorOf(backgroundColor, returnFlat: true)
+            cell.backgroundColor =  backgroundColor
+        }
         return cell
     }
 }

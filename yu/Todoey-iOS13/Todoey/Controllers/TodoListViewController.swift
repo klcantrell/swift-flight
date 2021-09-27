@@ -5,6 +5,8 @@ import ChameleonFramework
 class TodoListViewController: SwipeTableViewController {
     let realm = try! Realm()
     var todos: Results<Todo>?
+
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var selectedCategory: TodoCategory? {
         didSet {
@@ -16,9 +18,29 @@ class TodoListViewController: SwipeTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = 80.0
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .singleLine
         if #available(iOS 15.0, *) {
             tableView.fillerRowHeight = 80.0
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        if let selectedCategoryColor = selectedCategory?.rowColor,
+           let selectedCategoryTitle = selectedCategory?.name {
+            if let backgroundColor = UIColor(hexString: selectedCategoryColor) {
+                let constrastColor = ContrastColorOf(backgroundColor, returnFlat: true)
+                navigationController?.navigationBar.scrollEdgeAppearance?.backgroundColor = backgroundColor
+                navigationController?.navigationBar.standardAppearance.backgroundColor = backgroundColor
+                navigationController?.navigationBar.tintColor = constrastColor
+                searchBar?.barTintColor = backgroundColor
+                navigationController?.navigationBar.scrollEdgeAppearance?.largeTitleTextAttributes = [
+                    NSAttributedString.Key.foregroundColor: constrastColor
+                ]
+                navigationController?.navigationBar.standardAppearance.titleTextAttributes = [
+                    NSAttributedString.Key.foregroundColor: constrastColor
+                ]
+            }
+            title = selectedCategoryTitle
         }
     }
     
